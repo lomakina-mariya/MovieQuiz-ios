@@ -23,6 +23,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImplementation()
         alertPresenter = AlertPresenter(controller: self)
+        presenter.viewController = self
         
         imageView.layer.backgroundColor = UIColor.clear.cgColor
         activityIndicator.hidesWhenStopped = true
@@ -48,19 +49,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         self.switchOfButtons()
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
     }
+    
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         self.switchOfButtons()
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClicked()
     }
     
     // MARK: - Private functions
@@ -74,7 +70,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         switchOfButtons()
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
         }
@@ -134,6 +130,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showNetworkError(message: String) {
+        hideLoadingIndicator()
+        
         let alertModel = AlertModel(
             title: "Ошибка",
             message: message,
@@ -142,12 +140,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 guard let self = self else { return }
                 self.questionFactory?.loadData()
                 self.showLoadingIndicator()
+                self.presenter.resetQuestionIndex()
             }
         )
         alertPresenter?.show(result: alertModel)
     }
     
     private func showImageError(message: String) {
+        hideLoadingIndicator()
+        
         let alertModel = AlertModel(
             title: "Ошибка",
             message: message,
