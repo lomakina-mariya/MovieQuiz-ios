@@ -1,5 +1,5 @@
 import UIKit
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
@@ -17,7 +17,7 @@ final class MovieQuizViewController: UIViewController {
         
         alertPresenter = AlertPresenter(controller: self)
         presenter = MovieQuizPresenter(viewController: self)
-    
+        
         imageView.layer.backgroundColor = UIColor.clear.cgColor
         activityIndicator.hidesWhenStopped = true
         self.switchOfButtons()
@@ -33,13 +33,6 @@ final class MovieQuizViewController: UIViewController {
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         self.switchOfButtons()
         presenter.noButtonClicked()
-    }
-    
-    // MARK: - Private functions
-    
-    private func switchOfButtons() {
-        yesButton.isEnabled.toggle()
-        noButton.isEnabled.toggle()
     }
     
     // MARK: - Internal functions
@@ -76,13 +69,18 @@ final class MovieQuizViewController: UIViewController {
     }
     
     func showLoadingIndicator() {
-        activityIndicator.startAnimating()
+        activityIndicator?.startAnimating()
     }
     
     func hideLoadingIndicator() {
-        activityIndicator.stopAnimating()
+        activityIndicator?.stopAnimating()
     }
-      
+    
+    func switchOfButtons() {
+        yesButton.isEnabled.toggle()
+        noButton.isEnabled.toggle()
+    }
+    
 }
 
 
