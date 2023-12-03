@@ -32,7 +32,7 @@ final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
 
 
 final class MovieQuizPresenterTests: XCTestCase {
-    func testPresenterConvertModel() throws {
+    func testPresenterConvertModel() {
         let viewControllerMock = MovieQuizViewController()
         let sut = MovieQuizPresenter(viewController: viewControllerMock)
         

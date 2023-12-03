@@ -6,17 +6,16 @@ import XCTest
 @testable import MovieQuiz
 
 class ArrayTests: XCTest {
-    func testGetValueInRange() throws { 
+    func testGetValueInRange() {
         // Given
         let array = [1, 1, 2, 3, 5]
         // When
         let value = array[safe: 2]
         // Then
-        XCTAssertNotNil(value)
         XCTAssertEqual(value, 2)
     }
     
-    func testGetValueOutRange() throws {
+    func testGetValueOutRange() {
         // Given
         let array = [1, 1, 2, 3, 5]
         // When
