@@ -10,6 +10,7 @@ final class StatisticServiceImplementation: StatisticService {
     }
     
     private let userDefaults = UserDefaults.standard
+    
     var gamesCount: Int {
         get {
             return self.userDefaults.integer(forKey: Keys.gamesCount.rawValue)
@@ -54,6 +55,7 @@ final class StatisticServiceImplementation: StatisticService {
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
         }
     }
+    
     func store(correct count: Int, total amount: Int) {
         self.gamesCount += 1
         self.correct += count
